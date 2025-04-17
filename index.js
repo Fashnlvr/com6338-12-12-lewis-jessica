@@ -25,17 +25,37 @@ class Word {
     this.correctLetters = []
   }
 
-  // implement the guessLetter function:
-  // guessLetter(letter) {}
+  guessLetter(letter) {
+    if (this.correctLetters.includes(letter) || this.incorrectLetters.includes(letter)) {
+      return
+    }
 
-  // implement the updateScreen function:
-  // updateScreen() {}
+    if (this.word.includes(letter)) {
+      this.correctLetters.push(letter)
+      this.displayWord = [...this.word]
+        .map(char => (this.correctLetters.includes(char) ? char : "_"))
+        .join("")
+    } else {
+      this.incorrectLetters.push(letter)
+      this.remainingGuesses--
+    }
+  }
 
-  // implement the isGameOver function:
-  // isGameOver() {}
+  updateScreen() {
+    document.getElementById("word-to-guess").textContent = this.displayWord
+    document.getElementById("remaining-guesses").textContent = this.remainingGuesses
+    document.getElementById("incorrect-letters").textContent = this.incorrectLetters.join(", ")
+  }
 
-  // implement the getWinOrLoss function:
-  // getWinOrLoss() {}
+  isGameOver() {
+    return this.remainingGuesses <= 0 || this.displayWord === this.word
+  }
+
+  getWinOrLoss() {
+    if (this.displayWord === this.word && this.remainingGuesses > 0) return "win"
+    if (this.displayWord !== this.word && this.remainingGuesses <= 0) return "loss"
+    return null
+  }
 }
 
 function newGame() {
